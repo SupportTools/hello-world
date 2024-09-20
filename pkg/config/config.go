@@ -23,14 +23,6 @@ func LoadConfiguration() {
 	CFG.MetricsPort = parseEnvInt("METRICS_PORT", 9090) // Assuming 9090 as the default port
 }
 
-// getEnvOrDefault returns the value of an environment variable or a default value.
-func getEnvOrDefault(key, defaultValue string) string {
-	if value, exists := os.LookupEnv(key); exists {
-		return value
-	}
-	return defaultValue
-}
-
 // parseEnvInt parses an environment variable as an integer or returns a default value.
 func parseEnvInt(key string, defaultValue int) int {
 	value, exists := os.LookupEnv(key)
