@@ -58,8 +58,18 @@ func webserver(port int) {
 	serverAddress := fmt.Sprintf(":%d", port)
 	logger.Printf("Serving HelloWorld on HTTP port: %s\n", serverAddress)
 
-	// Start the HTTP server
-	log.Fatal(http.ListenAndServe(serverAddress, nil))
+	// Define server with timeouts
+	server := &http.Server{
+		Addr:         serverAddress,
+		ReadTimeout:  10 * 60 * 60, // Max time to read request body
+		WriteTimeout: 10 * 60 * 60, // Max time to write response
+		IdleTimeout:  60 * 60 * 60, // Max time to keep idle connections open
+	}
+
+	// Start the HTTP server with timeout settings
+	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		log.Fatalf("HTTP server failed to start: %v", err)
+	}
 }
 
 // helloWorldHandler handles requests to the root path and serves the HTML template

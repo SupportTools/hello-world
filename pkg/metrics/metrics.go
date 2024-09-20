@@ -41,7 +41,7 @@ func init() {
 	prometheus.MustRegister(responseDuration)
 }
 
-// StartMetricsServer starts the metrics server on the specified port.
+// StartMetricsServer starts the metrics server with timeouts on the specified port.
 func StartMetricsServer(port int) {
 	mux := http.NewServeMux()
 	mux.Handle("/metrics", promhttp.Handler())
@@ -51,7 +51,17 @@ func StartMetricsServer(port int) {
 	serverPort := strconv.Itoa(port)
 	logger.Printf("Metrics server starting on port %d\n", port)
 
-	if err := http.ListenAndServe(":"+serverPort, mux); err != nil {
+	// Create a custom server with timeouts
+	server := &http.Server{
+		Addr:    ":" + serverPort,
+		Handler: mux,
+		// Set reasonable timeouts to mitigate slowloris attacks
+		ReadTimeout:  10 * 60 * 60, // Max time to read the request body
+		WriteTimeout: 10 * 60 * 60, // Max time to write a response
+		IdleTimeout:  60 * 60 * 60, // Max time to keep idle connections open
+	}
+
+	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		logger.Fatalf("Metrics server failed to start: %v", err)
 	}
 }

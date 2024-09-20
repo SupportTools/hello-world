@@ -51,7 +51,7 @@ func SetupLogging(cfg *config.AppConfig) *logrus.Logger {
 	return logger
 }
 
-// LogRequest logs the incoming HTTP request.
+// GetRelativePath logs the incoming HTTP request.
 func GetRelativePath(filePath string) (string, error) {
 	wd, err := os.Getwd()
 	if err != nil {
