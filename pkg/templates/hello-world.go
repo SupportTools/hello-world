@@ -30,7 +30,7 @@ const (
     </style>
   </head>
   <body>
-    <h2><a style="text-decoration: none; href=" https:="">SupportTools</a></h2>
+    <h2><a style="text-decoration: none;" href="https://support.tools">SupportTools</a></h2>
     <img id="logo" src="img/logo.svg" alt="logo" width=400 />
     <h1>Hello world!</h1>
     <h3>My hostname is {{.Hostname}}</h3>
@@ -61,7 +61,7 @@ const (
     <br />`
 
 	webLinks = `    <div id='Links' class="row social">
-      <a class="p-a-xs" href="https://slack.rancher.io/"><img src="img/icon-slack.svg" alt="slack" height="25" width="25"></a>
+      <a class="p-a-xs" href="https://support.tools"><img src="img/logo.svg" alt="website" height="25" width="25"></a>
       <a class="p-a-xs" href="https://github.com/supporttools"><img src="img/icon-github.svg" alt="github" height="25" width="25"></a>
       <a class="p-a-xs" href="https://twitter.com/cubve8021"><img src="img/icon-twitter.svg" alt="twitter" height="25" width="25"></a>
       <a class="p-a-xs" href="https://www.linkedin.com/in/matthewmattox/"><img src="img/icon-linkedin.svg" height="25" alt="linkedin" width="25"></a>

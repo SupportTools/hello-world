@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "hello-world.fullname" . }}  # Use Helm's naming convention
+  labels:
+    app: {{ include "hello-world.name" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "hello-world.name" . }}
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "{{ .Values.settings.metrics.port }}"  # Dynamic metrics port
+        prometheus.io/path: "/metrics"
+      labels:
+        app: {{ include "hello-world.name" . }}
+    spec:
+      serviceAccountName: {{ .Values.serviceAccount.name | default .Release.Name }}
+      imagePullSecrets:
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ include "hello-world.name" . }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+          ports:
+            - name: http
+              containerPort: {{ .Values.settings.port | default 8080 }}
+              protocol: TCP
+            - name: metrics
+              containerPort: {{ .Values.settings.metrics.port | default 9000 }}
+              protocol: TCP
+          env:
+            - name: PORT
+              value: "{{ .Values.settings.port | default 8080 }}"
+            - name: METRICS_PORT
+              value: "{{ .Values.settings.metrics.port | default 9000 }}"
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            {{- toYaml .Values.volumeMounts | nindent 12 }}
+      volumes:
+        {{- toYaml .Values.volumes | nindent 8 }}
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
+      affinity:
+        {{- toYaml .Values.affinity | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.tolerations | nindent 8 }}
