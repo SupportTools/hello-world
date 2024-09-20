@@ -73,7 +73,6 @@ func helloWorldHandler(w http.ResponseWriter, r *http.Request) {
 	data := map[string]interface{}{
 		"Hostname":  getHostname(),
 		"GitCommit": version.GitCommit,
-		"Services":  getK8sServices(),
 		"Host":      r.Host,
 		"Headers":   r.Header,
 	}
@@ -99,13 +98,4 @@ func getHostname() string {
 		return "unknown"
 	}
 	return hostname
-}
-
-// getK8sServices simulates retrieving services for the sake of the example
-func getK8sServices() map[string]string {
-	// Simulate Kubernetes services retrieval
-	return map[string]string{
-		"Service1": "http://service1:80",
-		"Service2": "http://service2:80",
-	}
 }

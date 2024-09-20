@@ -38,17 +38,6 @@ const (
     <h4>Git Commit</h4>
     <h4>{{.GitCommit}}</h4>`
 
-	webServices = `{{- $length := len .Services }} 
-  {{- if gt $length 0 }}
-    <div id='Services'>
-      <h3>k8s services found {{$length}}</h3>
-    {{ range $k,$v := .Services }}
-      <b>{{ $k }}</b> {{ $v }}<br />
-    {{ end }}
-    </div>
-    <br />
-  {{ end }}`
-
 	webDetails = `    <button class='button' onclick='myFunction()'>Show request details</button>
     <div id="` + reqInfoID + `" style='display:none'>
       <h3>Request info</h3>
@@ -82,7 +71,6 @@ const (
 </html>`
 
 	HelloWorldTemplate = webHead + `
-` + webServices + `
 ` + webLinks + `
 ` + webDetails + `
 ` + webTail
