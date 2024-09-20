@@ -11,6 +11,7 @@ import (
 	"github.com/supporttools/hello-world/pkg/logging"
 )
 
+// logger is the global logger for the metrics package.
 var logger = logging.SetupLogging(&config.CFG)
 
 var (
@@ -34,12 +35,13 @@ var (
 	)
 )
 
+// init registers the metrics with Prometheus.
 func init() {
-	// Register the histograms with Prometheus.
 	prometheus.MustRegister(totalRequests)
 	prometheus.MustRegister(responseDuration)
 }
 
+// StartMetricsServer starts the metrics server on the specified port.
 func StartMetricsServer(port int) {
 	mux := http.NewServeMux()
 	mux.Handle("/metrics", promhttp.Handler())
@@ -54,6 +56,7 @@ func StartMetricsServer(port int) {
 	}
 }
 
+// RecordMetrics records the metrics for the given path and duration.
 func RecordMetrics(path string, duration float64) {
 	totalRequests.WithLabelValues(path).Inc()
 	responseDuration.WithLabelValues(path).Observe(duration)

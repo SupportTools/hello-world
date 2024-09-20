@@ -13,6 +13,7 @@ type AppConfig struct {
 	MetricsPort int  `json:"metricsPort"`
 }
 
+// CFG is the global configuration object.
 var CFG AppConfig
 
 // LoadConfiguration loads configuration from environment variables.
@@ -22,6 +23,7 @@ func LoadConfiguration() {
 	CFG.MetricsPort = parseEnvInt("METRICS_PORT", 9090) // Assuming 9090 as the default port
 }
 
+// getEnvOrDefault returns the value of an environment variable or a default value.
 func getEnvOrDefault(key, defaultValue string) string {
 	if value, exists := os.LookupEnv(key); exists {
 		return value
@@ -29,6 +31,7 @@ func getEnvOrDefault(key, defaultValue string) string {
 	return defaultValue
 }
 
+// parseEnvInt parses an environment variable as an integer or returns a default value.
 func parseEnvInt(key string, defaultValue int) int {
 	value, exists := os.LookupEnv(key)
 	if !exists {
@@ -42,6 +45,7 @@ func parseEnvInt(key string, defaultValue int) int {
 	return intValue
 }
 
+// parseEnvBool parses an environment variable as a boolean or returns a default value.
 func parseEnvBool(key string, defaultValue bool) bool {
 	value, exists := os.LookupEnv(key)
 	if !exists {

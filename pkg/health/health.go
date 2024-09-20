@@ -16,11 +16,19 @@ type VersionInfo struct {
 	BuildTime string `json:"buildTime"`
 }
 
+// logger is the global logger for the health package.
 var logger = logging.SetupLogging(&config.CFG)
+
+// Version information is set at build time.
 var version = "MISSING VERSION INFO"
+
+// GitCommit are set at build time.
 var GitCommit = "MISSING GIT COMMIT"
+
+// BuildTime are set at build time.
 var BuildTime = "MISSING BUILD TIME"
 
+// HealthzHandler returns a simple "ok" response.
 func HealthzHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "ok")

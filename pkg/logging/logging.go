@@ -11,8 +11,10 @@ import (
 	"github.com/supporttools/hello-world/pkg/config"
 )
 
+// logger is the global logger for the logging package.
 var logger *logrus.Logger
 
+// LogCallerInfo returns a log entry with the caller's filename and line number.
 func LogCallerInfo() *logrus.Entry {
 	_, filename, line, ok := runtime.Caller(1)
 	if !ok {
@@ -28,6 +30,7 @@ func LogCallerInfo() *logrus.Entry {
 	return logger.WithField("line", line)
 }
 
+// SetupLogging initializes the logger with the provided configuration.
 func SetupLogging(cfg *config.AppConfig) *logrus.Logger {
 	logger = logrus.New()
 	logger.SetReportCaller(true)
@@ -48,6 +51,7 @@ func SetupLogging(cfg *config.AppConfig) *logrus.Logger {
 	return logger
 }
 
+// LogRequest logs the incoming HTTP request.
 func GetRelativePath(filePath string) (string, error) {
 	wd, err := os.Getwd()
 	if err != nil {
@@ -60,6 +64,7 @@ func GetRelativePath(filePath string) (string, error) {
 	return relPath, nil
 }
 
+// sanitizeLogField replaces newline, carriage return, and tab characters with escape sequences.
 func sanitizeLogField(input string) string {
 	replacer := strings.NewReplacer(
 		"\n", "\\n",
@@ -69,6 +74,7 @@ func sanitizeLogField(input string) string {
 	return replacer.Replace(input)
 }
 
+// LogRequest logs the incoming HTTP request.
 func LogRequest(handler http.Handler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		remoteAddr := sanitizeLogField(r.RemoteAddr)

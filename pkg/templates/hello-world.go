@@ -70,6 +70,7 @@ const (
   </body>
 </html>`
 
+	// HelloWorldTemplate is the HTML template for the hello-world page.
 	HelloWorldTemplate = webHead + `
 ` + webLinks + `
 ` + webDetails + `
