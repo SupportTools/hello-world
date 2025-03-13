@@ -87,24 +87,6 @@ jobs:
             GIT_COMMIT=${{ github.sha }}
             BUILD_DATE=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
           
-      - name: Install cosign
-        uses: sigstore/cosign-installer@v3.1.1
-        
-      - name: Generate SBOM
-        uses: anchore/sbom-action@v0
-        with:
-          image: supporttools/hello-world:v${{ github.run_number }}
-          artifact-name: sbom.spdx.json
-          upload-artifact: true
-          
-      - name: Sign the container image
-        if: github.ref == 'refs/heads/main'
-        run: |
-          cosign sign --key env://COSIGN_PRIVATE_KEY supporttools/hello-world:v${{ github.run_number }}
-        env:
-          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
-          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
-
   Publish:
     runs-on: ubuntu-latest
     timeout-minutes: 5
